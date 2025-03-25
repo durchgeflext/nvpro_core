@@ -25,7 +25,7 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include <nvpwindow.hpp>
+#include <nvp/nvpwindow.hpp>
 #include <glm/glm.hpp>
 
 #include <algorithm>

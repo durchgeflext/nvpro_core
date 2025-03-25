@@ -21,7 +21,7 @@
 #pragma once
 
 #include <assert.h>
-#include <platform.h>
+#include <nvp/platform.h>
 #include <vector>
 #include <vulkan/vulkan_core.h>
 

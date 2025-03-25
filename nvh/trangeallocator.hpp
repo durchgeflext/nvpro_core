@@ -29,7 +29,7 @@
 #include <bit>
 #endif
 
-#include <NvFoundation.h>  // for NV_X64
+#include <nvp/NvFoundation.h>  // for NV_X64
 
 #if defined(NV_X64) && defined(_MSC_VER)
 #include <intrin.h>
