@@ -262,7 +262,8 @@ Common structures used to store glTF scenes in GPU buffers.
 > Contains structures and functions for procedural sky models.
 
 This file includes two sky models: a simple sky that is fast to compute, and
-a more complex "physical sky" model based on a model from Mental Ray,
+a more complex "physical sky" model based on a model from Mental Ray and later
+modernized in the MDL SDK starting [here](https://github.com/NVIDIA/MDL-SDK/blob/203d5140b1dee89de17b26e828c4333571878629/src/shaders/mdl/base/base.mdl#L1180)
 customized for nvpro-samples.
 ### Struct `SkySamplingResult`
 > Contains the resulting direction, probability density function, and radiance
@@ -283,6 +284,8 @@ customized for nvpro-samples.
 > Initializes `PhysicalSkyParameters` with default, realistic parameters.
 ### Function `evalPhysicalSky`
 > Returns the radiance of the physical sky model in a given direction.
+### Function `samplePhysicalSkyPDF`
+> Returns the probability that `samplePhysicalSky` samples a certain direction.
 ### Function `samplePhysicalSky`
 > Samples the physical sky model using two random values, returning a `SkySamplingResult`.
 
@@ -366,6 +369,11 @@ section 16.6.1, "COSINE-WEIGHTED HEMISPHERE ORIENTED TO THE Z-AXIS".
 > The power heuristic for multiple importance sampling, with `beta = 2`.
 
 See equation 9.13 of https://graphics.stanford.edu/papers/veach_thesis/thesis.pdf.
+### Function `sampleBlur`
+> Samples a texture with a Gaussian blur kernel.
+### Function `smoothHDRBlur`
+> Samples a texture with a Gaussian blur kernel, using multiple LOD levels.
+* The blur amount controls the blending between the two LOD levels.
 
 ## ggx.h
 Lower-level mathematical functions used for BSDFs. This file is named after the
@@ -438,6 +446,7 @@ to use textures from a different array name.
 ### `NO_TEXTURES` Define
 > Define this before including `pbr_mat_eval.h` to use a color of `vec4(1.0f)`
 > for everything instead of reading textures.
+* Convert PBR specular glossiness to metallic-roughness
 ### `MICROFACET_MIN_ROUGHNESS` Define
 > Minimum roughness for microfacet models.
 

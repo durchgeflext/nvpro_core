@@ -1,0 +1,26 @@
+var struct_c_s_f_offset_mgr =
+[
+    [ "PatchEntry", "struct_c_s_f_offset_mgr_1_1_patch_entry.html", "struct_c_s_f_offset_mgr_1_1_patch_entry" ],
+    [ "CSFOffsetMgr", "struct_c_s_f_offset_mgr.html#a1d3e82d8904e7c37724b90940b44daf8", null ],
+    [ "beginObjectReference", "struct_c_s_f_offset_mgr.html#a8e9d46a668a5b4c164487038abdde236", null ],
+    [ "endObjectReference", "struct_c_s_f_offset_mgr.html#af07622771c84cf98fc49a914d3b16310", null ],
+    [ "finalize", "struct_c_s_f_offset_mgr.html#a32469bce83e66ad7e141ab6d78d8f2a4", null ],
+    [ "getFileSize", "struct_c_s_f_offset_mgr.html#a924c24dfa4e3d3bde0099428bb0ad93c", null ],
+    [ "handleAlignment", "struct_c_s_f_offset_mgr.html#affdc4b0251c13a81fd4211bc0408cfed", null ],
+    [ "setObjects", "struct_c_s_f_offset_mgr.html#ac9a2874da28a14448f640ace40995c10", null ],
+    [ "setPass", "struct_c_s_f_offset_mgr.html#a24e3ad863fa3bb9e749a2769ef9ff932", null ],
+    [ "storeArray", "struct_c_s_f_offset_mgr.html#aa2a1d724a20d66987dcb01b5375a2537", null ],
+    [ "storeHeader", "struct_c_s_f_offset_mgr.html#a1a3de263e7c62970decc32074a555deb", null ],
+    [ "storeObjectData", "struct_c_s_f_offset_mgr.html#a2c699bcdbbba4865f830c8fbb5f68eeb", null ],
+    [ "writePadding", "struct_c_s_f_offset_mgr.html#af4fd691e77fa5f354d958e3ee7a69357", null ],
+    [ "m_current", "struct_c_s_f_offset_mgr.html#a3a97b5c9152977fe7805d072aea0336d", null ],
+    [ "m_file", "struct_c_s_f_offset_mgr.html#a56bc83b5afc2433d872f75af6164fb13", null ],
+    [ "m_locations", "struct_c_s_f_offset_mgr.html#aeefc13474c57e9f6b13e6077e263780d", null ],
+    [ "m_numLocations", "struct_c_s_f_offset_mgr.html#a23e266f26348f5fbf1e1a4a4687a0ab4", null ],
+    [ "m_objectOffsets", "struct_c_s_f_offset_mgr.html#a0a617ea9f2fc14b07ccd67300061f05c", null ],
+    [ "m_pass", "struct_c_s_f_offset_mgr.html#a809ca576a88218542564bb807ef4c5c9", null ],
+    [ "m_patches", "struct_c_s_f_offset_mgr.html#a70f3dbfab3f4da6553cc8ad64275ea5d", null ],
+    [ "m_tempObjData", "struct_c_s_f_offset_mgr.html#a13c6112cf1a3ab01f9d30bb3dae625d6", null ],
+    [ "m_tempObjSizeMax", "struct_c_s_f_offset_mgr.html#aacde517fa9617e97327661fafc830e97", null ],
+    [ "m_version", "struct_c_s_f_offset_mgr.html#a7c919a8696c7af2f4f8ea427b58e2d9d", null ]
+];

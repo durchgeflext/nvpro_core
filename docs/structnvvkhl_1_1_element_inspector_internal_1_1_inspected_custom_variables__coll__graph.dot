@@ -1,0 +1,13 @@
+digraph "nvvkhl::ElementInspectorInternal::InspectedCustomVariables"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="nvvkhl::ElementInspector\lInternal::InspectedCustomVariables",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="nvvkhl::ElementInspector\lInternal::InspectedBuffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_element_inspector_internal_1_1_inspected_buffer.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" filter" ,fontname="Helvetica"];
+  Node3 [label="nvvkhl::ElementInspector\lInternal::Filter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_element_inspector_internal_1_1_filter.html",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hasFilter" ,fontname="Helvetica"];
+  Node4 [label="nvvkhl::ElementInspector\lInternal::FastBitSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_element_inspector_internal_1_1_fast_bit_set.html",tooltip=" "];
+}

@@ -1,0 +1,11 @@
+digraph "nvvk::Context"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="nvvk::Context",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_physicalInfo" ,fontname="Helvetica"];
+  Node2 [label="nvvk::Context::PhysicalDeviceInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvk_1_1_context_1_1_physical_device_info.html",tooltip=" "];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_queueC\nm_queueGCT\nm_queueT" ,fontname="Helvetica"];
+  Node3 [label="nvvk::Context::Queue",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvk_1_1_context_1_1_queue.html",tooltip=" "];
+}

@@ -1,6 +1,7 @@
 ## Table of Contents
 - [imgui_axis.hpp](#imgui_axishpp)
 - [imgui_camera_widget.h](#imgui_camera_widgeth)
+- [imgui_handler.h](#imgui_handlerh)
 - [imgui_orient.h](#imgui_orienth)
 
 ## imgui_axis.hpp
@@ -30,6 +31,10 @@ Example
 - SetHomeCamera : set the home camera - replace the one on load
 - AddCamera : adding a camera to the list of cameras
 
+
+## imgui_handler.h
+
+> Todo: Add documentation
 
 ## imgui_orient.h
 

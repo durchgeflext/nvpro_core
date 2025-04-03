@@ -1,0 +1,11 @@
+digraph "nvgl::ContextWindowCreateInfo"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="nvgl::ContextWindowCreateInfo",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" share" ,fontname="Helvetica"];
+  Node2 [label="nvgl::ContextWindow",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvgl_1_1_context_window.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_internal" ,fontname="Helvetica"];
+  Node3 [label="nvgl::ContextWindowInternalGL",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvgl_1_1_context_window_internal_g_l.html",tooltip=" "];
+}

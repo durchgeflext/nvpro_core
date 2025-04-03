@@ -1,0 +1,15 @@
+digraph "nvvkhl::NvmlMonitor::DeviceMemory"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="nvvkhl::NvmlMonitor\l::DeviceMemory",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bar1Total\nmemoryTotal" ,fontname="Helvetica"];
+  Node2 [label="nvvkhl::NvmlMonitor\l::NVMLField\< uint64_t \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_nvml_monitor_1_1_n_v_m_l_field.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< uint64_t \>" ,fontname="Helvetica"];
+  Node3 [label="nvvkhl::NvmlMonitor\l::NVMLField\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_nvml_monitor_1_1_n_v_m_l_field.html",tooltip=" "];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bar1Free\nbar1Used\nmemoryFree\nmemoryUsed" ,fontname="Helvetica"];
+  Node4 [label="nvvkhl::NvmlMonitor\l::NVMLField\< std::vector\l\< uint64_t \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_nvml_monitor_1_1_n_v_m_l_field.html",tooltip=" "];
+  Node3 -> Node4 [dir="back",color="orange",fontsize="10",style="dashed",label=" \< std::vector\< uint64\l_t \> \>" ,fontname="Helvetica"];
+}

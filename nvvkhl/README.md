@@ -3,6 +3,8 @@
 - [appbase_vk.hpp](#appbase_vkhpp)
 - [appbase_vkpp.hpp](#appbase_vkpphpp)
 - [application.hpp](#applicationhpp)
+- [app_swapchain_vk.hpp](#app_swapchain_vkhpp)
+- [app_utils.hpp](#app_utilshpp)
 - [element_benchmark_parameters.hpp](#element_benchmark_parametershpp)
 - [element_camera.hpp](#element_camerahpp)
 - [element_dbgprintf.hpp](#element_dbgprintfhpp)
@@ -238,23 +240,33 @@ nvvkhl::AppBaseVk is the same as nvvkhl::AppBaseVk but makes use of the Vulkan C
 
 
 ## application.hpp
-### class nvvkhl::Application
-
-The Application is basically a small modification of the ImGui example for Vulkan.
-Because we support multiple viewports, duplicating the code would be not necessary
-and the code is very well explained.
+### class nvapp::Application
 
 To use the application,
-* Fill the ApplicationCreateInfo with all the information, including the Vulkan creation information (nvvk::ContextCreateInfo).
-* Attach elements to the application, such as rendering, camera, etc.
+* Fill the ApplicationCreateInfo with all the information,
+
+Example:
+````cpp
+    nvapp::ApplicationCreateInfo appInfo;
+    appInfo.name           = "Minimal Test";
+    appInfo.width          = 800;
+    appInfo.height         = 600;
+    appInfo.vSync          = false;
+    appInfo.instance       = vkContext.getInstance();
+    appInfo.physicalDevice = vkContext.getPhysicalDevice();
+    appInfo.device         = vkContext.getDevice();
+    appInfo.queues         = vkContext.getQueueInfos();
+ ```
+
+* Attach elements to the application, the main rendering, and others like, camera, etc.
 * Call run() to start the application.
 *
-* The application will create the window, the Vulkan context, and the ImGui context.
+* The application will create the window and the ImGui context.
 
 Worth notice
 * ::init() : will create the GLFW window, call nvvk::context for the creation of the
               Vulkan context, initialize ImGui , create the surface and window (::setupVulkanWindow)
-* ::shutdown() : the oposite of init
+* ::shutdown() : the opposite of init
 * ::run() : while running, render the frame and present the frame. Check for resize, minimize window
               and other changes. In the loop, it will call some functions for each 'element' that is connected.
               onUIRender, onUIMenu, onRender. See IApplication for details.
@@ -284,6 +296,30 @@ frame with the command buffer.
 Note: order of Elements can be important if one depends on the other. For example, the ElementCamera should
       be added before the rendering sample, such that its matrices are updated before pulled by the renderer.
 
+
+#### Docking
+
+The layout can be customized by providing a function to the ApplicationCreateInfo.
+
+Example:
+````
+    // Setting up the layout of the application
+    appInfo.dockSetup = [](ImGuiID viewportID) {
+      ImGuiID settingID = ImGui::DockBuilderSplitNode(viewportID, ImGuiDir_Right, 0.2F, nullptr, &viewportID);
+      ImGui::DockBuilderDockWindow("Settings", settingID);
+    };
+````
+
+
+
+
+## app_swapchain_vk.hpp
+
+> Todo: Add documentation
+
+## app_utils.hpp
+
+> Todo: Add documentation
 
 ## element_benchmark_parameters.hpp
 ### class nvvkhl::ElementBenchmarkParameters

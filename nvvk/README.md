@@ -330,7 +330,7 @@ nvvk::PushComputeDispatcher<PushConstant, BindingLocation> myCompute;
 VkBuffer myFirstBuffer = createMyFirstBuffer(...);
 VkBuffer mySecondBuffer = createMySecondBuffer(...);
 VkDevice device = getMyVkDevice(...);
-myCompute.create(device);
+myCompute.init(device);
 const uint8_t* spvCode = getMyComputeShaderCode(...);
 size_t spvCodeSize = getMyComputeShaderCodeSize(...);
 myCompute.getBindings().addBinding(BindingLocation::eMyBindingLocation, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1, VK_SHADER_STAGE_ALL););
@@ -620,7 +620,8 @@ This class is a wrapper around the VkRenderingInfoKHR structure, which is used t
 
 ## error_vk.hpp
 ### Function nvvk::checkResult
->  Returns true on critical error result, logs errors.
+> Checks Vulkan return codes. On error (a negative result code), it
+> prints a message showing what failed and halts the program.
 
 Use `NVVK_CHECK(result)` to automatically log filename/linenumber.
 ### Function nvvk::setCheckResultHook
@@ -820,6 +821,8 @@ pipelineState.addAttributeDescriptions ({
 
 The graphics pipeline generator takes a GraphicsPipelineState object and pipeline-specific information such as
 the render pass and pipeline layout to generate the final pipeline.
+
+Note: `nvvk::GraphicsPipelineState::createInfo.pNext` is modified by the setter functions. Therefore custom changes must be done last.
 
 Example of usage :
 ```cpp

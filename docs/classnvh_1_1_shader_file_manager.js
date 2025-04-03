@@ -1,0 +1,38 @@
+var classnvh_1_1_shader_file_manager =
+[
+    [ "Definition", "structnvh_1_1_shader_file_manager_1_1_definition.html", "structnvh_1_1_shader_file_manager_1_1_definition" ],
+    [ "IncludeEntry", "structnvh_1_1_shader_file_manager_1_1_include_entry.html", "structnvh_1_1_shader_file_manager_1_1_include_entry" ],
+    [ "IncludeID", "classnvh_1_1_shader_file_manager_1_1_include_i_d.html", "classnvh_1_1_shader_file_manager_1_1_include_i_d" ],
+    [ "IncludeRegistry", "classnvh_1_1_shader_file_manager.html#a669467355e2390f96336a95eb6f9089a", null ],
+    [ "FileType", "classnvh_1_1_shader_file_manager.html#a3b334d33680cbcd99740e15c0f7df7fb", [
+      [ "FILETYPE_DEFAULT", "classnvh_1_1_shader_file_manager.html#a3b334d33680cbcd99740e15c0f7df7fba782070a7fd0b42b7154340bc307a0452", null ],
+      [ "FILETYPE_GLSL", "classnvh_1_1_shader_file_manager.html#a3b334d33680cbcd99740e15c0f7df7fba7fce93febe2d2476bb3612beac9779e6", null ],
+      [ "FILETYPE_HLSL", "classnvh_1_1_shader_file_manager.html#a3b334d33680cbcd99740e15c0f7df7fba4edcc55ecb8ceef0ce8eea1c0531ac4a", null ],
+      [ "FILETYPE_SPIRV", "classnvh_1_1_shader_file_manager.html#a3b334d33680cbcd99740e15c0f7df7fba936bc1119ea513779412b5387e4758fc", null ]
+    ] ],
+    [ "ShaderFileManager", "classnvh_1_1_shader_file_manager.html#ab9949a0ad643609d403fad79a1082ecb", null ],
+    [ "addDirectory", "classnvh_1_1_shader_file_manager.html#a5404fe9e48c9c4a6e135579358f6a5bf", null ],
+    [ "findInclude", "classnvh_1_1_shader_file_manager.html#a33f6a7ec75644856579a8e6374ed7e3a", null ],
+    [ "format", "classnvh_1_1_shader_file_manager.html#a7cf76daab337f8527d914f2193e34a94", null ],
+    [ "getContent", "classnvh_1_1_shader_file_manager.html#ad5b2e66d1e65c5fb373d7f3d1a6461e8", null ],
+    [ "getContentWithRequestingSourceDirectory", "classnvh_1_1_shader_file_manager.html#a9c377f50cabb1026c4bd76c3ed281871", null ],
+    [ "getDirectoryComponent", "classnvh_1_1_shader_file_manager.html#a401fc25f9416ba87f66977acb9ec3d95", null ],
+    [ "getIncludeContent", "classnvh_1_1_shader_file_manager.html#a5084d6300bd6f17843f2f37c430d0f1d", null ],
+    [ "getIncludeEntry", "classnvh_1_1_shader_file_manager.html#aa026959cc0e5cb1d211181e19914ac05", null ],
+    [ "getProcessedContent", "classnvh_1_1_shader_file_manager.html#ae178fee647d0cc95afe29a39137a6f4a", null ],
+    [ "loadIncludeContent", "classnvh_1_1_shader_file_manager.html#a4ef652bfa83739c661d847756477ac2e", null ],
+    [ "manualInclude", "classnvh_1_1_shader_file_manager.html#a5e81a2a56f2b5be934b5003f3aaaa45e", null ],
+    [ "manualIncludeText", "classnvh_1_1_shader_file_manager.html#aee625bc841e632ac6ce27d4eeb322115", null ],
+    [ "markerString", "classnvh_1_1_shader_file_manager.html#ad93656482f13dbb7ae943677f48975fd", null ],
+    [ "registerInclude", "classnvh_1_1_shader_file_manager.html#a6dac18ca135d1a69f6571c6bfd7ff27a", null ],
+    [ "m_directories", "classnvh_1_1_shader_file_manager.html#a3ba6d2797f2cce780ae2a3efa2e7170d", null ],
+    [ "m_extendedDirectories", "classnvh_1_1_shader_file_manager.html#acbcc2f32a8e4c3bb10e9af9d76608022", null ],
+    [ "m_filetype", "classnvh_1_1_shader_file_manager.html#afb6e51fd33622ae476f78dd7dc2ea0bf", null ],
+    [ "m_forceIncludeContent", "classnvh_1_1_shader_file_manager.html#ab3ee826f95241f18703031de4d3e765a", null ],
+    [ "m_forceLineFilenames", "classnvh_1_1_shader_file_manager.html#a0b5ae5f2fce8923b07a269d4aa872ce9", null ],
+    [ "m_handleIncludePasting", "classnvh_1_1_shader_file_manager.html#ada24b869261fd4694073ed0aabae8559", null ],
+    [ "m_includes", "classnvh_1_1_shader_file_manager.html#ad553d939a4e468570f52224c5fa48f58", null ],
+    [ "m_lineMarkers", "classnvh_1_1_shader_file_manager.html#afed79791e0995d99f5e6fe34755a6288", null ],
+    [ "m_prepend", "classnvh_1_1_shader_file_manager.html#ae6442cb7c89d5b810de935ced9d5f8d4", null ],
+    [ "m_supportsExtendedInclude", "classnvh_1_1_shader_file_manager.html#a8fe16c474fbd323c9db843db54ac6f6e", null ]
+];

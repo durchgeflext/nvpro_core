@@ -20,7 +20,7 @@ opaque layouts.
 
 
 ## nv_dds.h
-### nv_dds 2.1.0
+### nv_dds 2.1.1
 
 > A small yet complete library for reading and writing DDS files.
 
@@ -330,10 +330,30 @@ of elements in `accessor`.
 #### Function `copyAccessorData<T>(std::vector<T>& outData, ...)`
 > Same as `copyAccessorData(T*, ...)`, but taking a vector.
 #### Function `getAccessorData<T>`
-> Appends all the values of `accessor` to `attribVec`.
+> Appends all the values of `accessor` to `attribVec`, with conversion to type `T`.
 
 Returns `false` if the accessor is invalid.
-`T` must be `glm::vec2`, `glm::vec3`, or `glm::vec4`.
+`T` must be one of the following types:
+* Float vectors:            `float`,    `glm::vec2`,  `glm::vec3`,  or `glm::vec4`.
+* Unsigned integer vectors: `uint32_t`, `glm::uvec2`, `glm::uvec3`, or `glm::uvec4`.
+* Signed integer vectors:   `int32_t`,  `glm::ivec2`, `glm::ivec3`, or `glm::ivec4`.
+
+#### Function `getAccessorData2<T>`
+> Returns a span with all the values of `accessor`.
+
+This is like `getAccessorData<T>`, except it has a fast path if it can use the
+buffer's data directly.
+
+If the values needed conversion, re-packing, or had a sparse accessor, uses
+the provided std::vector for storage. This vector must remain alive as long as
+the pointer is in use.
+
+Returns a span with nullptr data and 0 length if the accessor is invalid.
+
+`T` must be one of the following types:
+* Float vectors:            `float`,    `glm::vec2`,  `glm::vec3`,  or `glm::vec4`.
+* Unsigned integer vectors: `uint32_t`, `glm::uvec2`, `glm::uvec3`, or `glm::uvec4`.
+* Signed integer vectors:   `int32_t`,  `glm::ivec2`, `glm::ivec3`, or `glm::ivec4`.
 #### Function `getAttribute<T>`
 > Appends all the values of `attribName` to `attribVec`.
 
@@ -353,6 +373,14 @@ Does not search up the node hierarchy, so e.g. if node A points to node B and
 node A is set to invisible and node B is set to visible, then
 `getNodeVisibility(B)` will return `KHR_node_visibility{true}` even though
 node B would not be visible due to node A.
+#### Function `getIndex`
+  Return the index of the vertex in the buffer
+#### Function `getAttributeData`
+ Return the data of the attribute: position, normal, ...
+#### Function `createTangentAttribute`
+ Create a tangent attribute for the primitive
+#### Function `simpleCreateTangents`
+Compute tangents based on the texture coordinates, using also position and normal attributes
 
 ## tiny_converter.hpp
 

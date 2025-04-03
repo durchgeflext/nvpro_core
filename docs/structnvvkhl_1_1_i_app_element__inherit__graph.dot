@@ -1,0 +1,26 @@
+digraph "nvvkhl::IAppElement"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="nvvkhl::IAppElement",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="nvvkhl::ElementBenchmark\lParameters",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_benchmark_parameters.html",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="nvvkhl::ElementCamera",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_element_camera.html",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="nvvkhl::ElementDbgPrintf",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_dbg_printf.html",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="nvvkhl::ElementDefaultMenu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_default_menu.html",tooltip=" "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="nvvkhl::ElementDefaultWindow\lTitle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_default_window_title.html",tooltip=" "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="nvvkhl::ElementInspector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_inspector.html",tooltip=" "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="nvvkhl::ElementNvml",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structnvvkhl_1_1_element_nvml.html",tooltip=" "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="nvvkhl::ElementProfiler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_profiler.html",tooltip=" "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="nvvkhl::ElementTesting",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classnvvkhl_1_1_element_testing.html",tooltip=" "];
+}

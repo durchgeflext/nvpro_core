@@ -21,6 +21,7 @@
 - [profiler.hpp](#profilerhpp)
 - [radixsort.hpp](#radixsorthpp)
 - [shaderfilemanager.hpp](#shaderfilemanagerhpp)
+- [stacktrace.hpp](#stacktracehpp)
 - [threading.hpp](#threadinghpp)
 - [timesampler.hpp](#timesamplerhpp)
 - [trangeallocator.hpp](#trangeallocatorhpp)
@@ -174,12 +175,23 @@ m_ubo.view = CameraManip.getMatrix();
 ## commandlineparser.hpp
 Command line parser.
 ```cpp
- std::string inFilename = "";
- bool printHelp = false;
- CommandLineParser args("Test Parser");
- args.addArgument({"-f", "--filename"}, &inFilename, "Input filename");
- args.addArgument({"-h", "--help"}, &printHelp, "Print Help");
- bool result = args.parse(argc, argv);
+    std::string            inFilename{};
+    bool                   printHelp = false;
+    glm::ivec2             winSize   = {1280, 720};
+    int8_t                 color[3];
+    nvh::CommandLineParser cli("Test Parser");
+    cli.addArgument({"-f", "--filename"}, &inFilename, "Input filename");
+    cli.addArgument({"--winSize"}, &winSize, "Size of window",
+                    [&]() { glfwSetWindowSize(nullptr, winSize[0], winSize[1]); });
+    cli.addArgument({"--callback"}, 1, "Callback with one argument",
+                    [&inFilename](std::vector<std::string> const& args) { inFilename = args[0]; });
+    cli.addArgument({"--color"}, 3, "Clear color ", [&color](std::vector<std::string> const& args) {
+      std::stringstream(args[0]) >> color[0];
+      std::stringstream(args[1]) >> color[1];
+      std::stringstream(args[2]) >> color[2];
+    });
+    cli.addFilename(".gltf", &inFilename, "Input filename with extension");
+    bool result = cli.parse(argc, argv);
 ```
 
 ## fileoperations.hpp
@@ -380,10 +392,34 @@ are copied into the output.
 Distributes batches of loops over BATCHSIZE items across multiple threads. numItems reflects the total number
 of items to process.
 
-batches: fn (uint64_t itemIndex, uint32_t threadIndex)
-         callback does single item
-ranges:  fn (uint64_t itemBegin, uint64_t itemEnd, uint32_t threadIndex)
-         callback does loop `for (uint64_t itemIndex = itemBegin; itemIndex < itemEnd; itemIndex++)`
+```cpp
+batches:         fn (uint64_t itemIndex)
+                 callback does single item
+
+batches_indexed: fn (uint64_t itemIndex, uint32_t threadIndex)
+                 callback does single item
+                 uses at most get_thread_pool().thread_count() threads
+
+ranges:          fn (uint64_t itemBegin, uint64_t itemEnd, uint32_t threadIndex)
+                 callback does loop: for (uint64_t itemIndex = itemBegin; itemIndex < itemEnd; itemIndex++)
+                 uses at most get_thread_pool().get_thread_count() threads
+```
+
+`BATCHSIZE` will also be used as the threshold for when to switch from
+single-threaded to multi-threaded execution. For this reason, it should be set
+to a power of 2 around where multi-threaded is faster than single-threaded for
+the given function. Some examples are:
+* 8192 for trivial workloads (a * x + y)
+* 2048 for animation workloads (multiplication by a single matrix)
+* 512 for more computationally heavy workloads (run XTEA)
+* 1 for full parallelization (load an image)
+
+If numThreads is equal to 1, runs single-threaded. Otherwise, `numThreads`
+is ignored.
+
+All functions here are thread-safe. However, if the callback does
+synchronization (e.g. locking, mutexes), then it is only safe to use
+batches_indexed and ranges.
 
 
 ## parametertools.hpp
@@ -532,6 +568,18 @@ loader is still available but `#include`s are left unchanged.
 Furthermore it handles injecting prepended strings (typically used
 for #defines) after the #version statement of GLSL files,
 regardless of m_handleIncludePasting's value.
+
+
+## stacktrace.hpp
+
+### function nvh::getStacktrace
+> Returns a string listing the function call stack at the current point.
+
+`numFramesToSkip` is the number of frames around the call to `getStacktrace`
+to skip.
+
+Returns "<stacktrace not supported on this system>" if there's no available
+backtrace backend. On internal error, returns an empty string.
 
 
 ## threading.hpp
