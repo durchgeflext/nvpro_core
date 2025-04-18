@@ -114,6 +114,15 @@ public:
   // Refit BLAS number blasIdx from updated buffer contents.
   void updateBlas(uint32_t blasIdx, BlasInput& blas, VkBuildAccelerationStructureFlagsKHR flags);
 
+  void clearBlas()
+  {
+    for (auto& blas : m_blas) {
+      m_alloc->destroy(blas);
+    }
+      m_blas.clear();
+  }
+
+
   // Build TLAS for static acceleration structures
   void buildTlas(const std::vector<VkAccelerationStructureInstanceKHR>& instances,
                  VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR,
@@ -180,6 +189,13 @@ public:
                      bool                                 update,          // Update == animation
                      bool                                 motion           // Motion Blur
   );
+
+  void clearTlas() {
+      if (m_tlas.accel != VK_NULL_HANDLE) {
+          m_alloc->destroy(m_tlas);
+          m_tlas = {};
+      }
+  }
 
 
 protected:
