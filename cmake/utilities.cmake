@@ -259,8 +259,11 @@ function(compile_glsl_directory)
 
   # If no flag set -g (debug)
   if(NOT DEFINED COMPILE_FLAGS)
-    set(COMPILE_FLAGS -g)
+      set(COMPILE_FLAGS -g)
   endif()
+
+  # Add the include directory for shaders
+  list(APPEND COMPILE_FLAGS -I${CMAKE_SOURCE_DIR}/include/shaders)
 
   # Compiling all GLSL
   compile_glsl(SOURCE_FILES ${GLSL_SOURCE_FILES} 
