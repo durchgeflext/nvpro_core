@@ -225,11 +225,8 @@ void nvvk::RaytracingBuilderKHR::buildTlasFromMultipleBlases(const std::vector<V
         VkAccelerationStructureCreateInfoKHR createInfo{VK_STRUCTURE_TYPE_ACCELERATION_STRUCTURE_CREATE_INFO_KHR};
         createInfo.type = VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_KHR;
         createInfo.size = sizeInfo.accelerationStructureSize;
-        createInfo.buffer = m_alloc->createBuffer(sizeInfo.accelerationStructureSize,
-                                                  VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_STORAGE_BIT_KHR |
-                                                      VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT).buffer;
 
-        vkCreateAccelerationStructureKHR(m_device, &createInfo, nullptr, &m_tlas.accel);
+        m_tlas = m_alloc->createAcceleration(createInfo);
         NAME_VK(m_tlas.accel);
     }
     buildInfo.dstAccelerationStructure = m_tlas.accel;
@@ -260,10 +257,9 @@ void nvvk::RaytracingBuilderKHR::buildTlasFromMultipleBlases(const std::vector<V
     cmdPool.submitAndWait(cmdBuf);
 
     // Cleanup
+    m_alloc->finalizeAndReleaseStaging();
     m_alloc->destroy(scratchBuffer);
     m_alloc->destroy(instanceBuffer);
-    m_alloc->finalizeAndReleaseStaging();
-
 }
 
 
