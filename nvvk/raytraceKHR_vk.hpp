@@ -180,6 +180,12 @@ public:
     m_alloc->destroy(instancesBuffer);
   }
 
+  // Builds TLAS with one instance per distinct BLAS in m_blas
+  void buildTlasFromMultipleBlases(const std::vector<VkAccelerationStructureInstanceKHR> &instances,
+                                   VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR, bool update =
+                                           false);
+
+
   // Creating the TLAS, called by buildTlas
   void cmdCreateTlas(VkCommandBuffer                      cmdBuf,          // Command buffer
                      uint32_t                             countInstance,   // number of instances
