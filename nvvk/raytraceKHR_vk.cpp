@@ -74,9 +74,10 @@ VkDeviceAddress nvvk::RaytracingBuilderKHR::getBlasDeviceAddress(uint32_t blasId
 // - if flag has the 'Compact' flag, the BLAS will be compacted
 //
 void nvvk::RaytracingBuilderKHR::buildBlas(const std::vector<BlasInput> &input,
+                                           const size_t size,
                                            VkBuildAccelerationStructureFlagsKHR flags) {
     m_cmdPool.init(m_device, m_queueIndex);
-    auto numBlas = static_cast<uint32_t>(input.size());
+    auto numBlas = static_cast<uint32_t>(size);
     VkDeviceSize asTotalSize{0}; // Memory size of all allocated BLAS
     VkDeviceSize maxScratchSize{0}; // Largest scratch size
 
