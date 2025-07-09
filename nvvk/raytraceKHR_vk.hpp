@@ -108,8 +108,8 @@ public:
   VkDeviceAddress getBlasDeviceAddress(uint32_t blasId);
 
   // Create all the BLAS from the vector of BlasInput
-  void buildBlas(const std::vector<BlasInput>& input,
-                 VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR);
+  void buildBlas(const std::vector<BlasInput> &input,
+                 size_t size, VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR);
 
   // Refit BLAS number blasIdx from updated buffer contents.
   void updateBlas(uint32_t blasIdx, BlasInput& blas, VkBuildAccelerationStructureFlagsKHR flags);

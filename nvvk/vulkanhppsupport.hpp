@@ -1201,7 +1201,7 @@ class RaytracingBuilderKHR : public nvvk::RaytracingBuilderKHR
 public:
   void buildBlas(const std::vector<RaytracingBuilderKHR::BlasInput>& blas_, vk::BuildAccelerationStructureFlagsKHR flags)
   {
-    nvvk::RaytracingBuilderKHR::buildBlas(blas_, static_cast<VkBuildAccelerationStructureFlagsKHR>(flags));
+    nvvk::RaytracingBuilderKHR::buildBlas(blas_, blas_.size(), static_cast<VkBuildAccelerationStructureFlagsKHR>(flags));
   }
 
   void buildTlas(const std::vector<VkAccelerationStructureInstanceKHR>& instances,
