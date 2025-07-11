@@ -124,9 +124,10 @@ public:
 
 
   // Build TLAS for static acceleration structures
-  void buildTlas(const std::vector<VkAccelerationStructureInstanceKHR>& instances,
-                 VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR,
-                 bool                                 update = false);
+  void buildTlas(const std::vector<VkAccelerationStructureInstanceKHR> &instances,
+                 size_t size,
+                 VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR, bool update =
+                         false);
 
 #ifdef VK_NV_ray_tracing_motion_blur
   // Build TLAS for mix of motion and static acceleration structures
@@ -141,13 +142,14 @@ public:
   // - update is to rebuild the Tlas with updated matrices, flag must have the 'allow_update'
   template <class T>
   void buildTlas(const std::vector<T>&                instances,
+                 const size_t                         size,
                  VkBuildAccelerationStructureFlagsKHR flags = VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR,
                  bool                                 update = false,
                  bool                                 motion = false)
   {
     // Cannot call buildTlas twice except to update.
     assert(m_tlas.accel == VK_NULL_HANDLE || update);
-    uint32_t countInstance = static_cast<uint32_t>(instances.size());
+    uint32_t countInstance = static_cast<uint32_t>(size);
 
     // Command buffer to create the TLAS
     nvvk::CommandPool genCmdBuf(m_device, m_queueIndex);

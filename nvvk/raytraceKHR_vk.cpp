@@ -139,10 +139,11 @@ void nvvk::RaytracingBuilderKHR::buildBlas(const std::vector<BlasInput> &input,
 }
 
 void nvvk::RaytracingBuilderKHR::buildTlas(const std::vector<VkAccelerationStructureInstanceKHR> &instances,
+                                           const size_t size,
                                            VkBuildAccelerationStructureFlagsKHR flags
                                            /*= VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT_KHR*/,
                                            bool update /*= false*/) {
-    buildTlas(instances, flags, update, false);
+    buildTlas(instances, size, flags, update, false);
 }
 
 #ifdef VK_NV_ray_tracing_motion_blur

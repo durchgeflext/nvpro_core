@@ -1208,7 +1208,7 @@ public:
                  vk::BuildAccelerationStructureFlagsKHR                 flags,
                  bool                                                   update = false)
   {
-    nvvk::RaytracingBuilderKHR::buildTlas(instances, static_cast<VkBuildAccelerationStructureFlagsKHR>(flags), update);
+    nvvk::RaytracingBuilderKHR::buildTlas(instances, 1, static_cast<VkBuildAccelerationStructureFlagsKHR>(flags), update);
   }
 };
 
