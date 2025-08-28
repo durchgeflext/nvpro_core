@@ -4,25 +4,28 @@
 
 #include "betterAsBuilder.hpp"
 
+#include <cstdint>
+#include <vector>
 #include <vulkan/vulkan_core.h>
 
 #include "acceleration_structures.hpp"
+#include "buffers_vk.hpp"
 #include "resourceallocator_vk.hpp"
 
 //--------------------------------------------------------------------------------------------------
 // Initializing the allocator and querying the raytracing properties
 //
 void nvvk::BetterRtBuilder::setup(const VkDevice &device, nvvk::ResourceAllocator *allocator,
-                                       uint32_t imageCount) {
+                                       const uint32_t imageCount) {
     m_device     = device;
     m_debug.setup(device);
     m_alloc = allocator;
 
     m_blas = std::vector<std::vector<nvvk::AccelKHR>>(imageCount);
     m_tlas = std::vector<nvvk::AccelKHR>(imageCount);
-    m_blasFences = std::vector<VkFence>(imageCount);
-    m_tlasFences = std::vector<VkFence>(imageCount);
     m_scratchBuffers = std::vector<nvvk::Buffer>(imageCount);
+    m_instanceBuffers = std::vector<nvvk::Buffer>(imageCount);
+    m_tlasScratchBuffers = std::vector<nvvk::Buffer>(imageCount);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -31,25 +34,37 @@ void nvvk::BetterRtBuilder::setup(const VkDevice &device, nvvk::ResourceAllocato
 void nvvk::BetterRtBuilder::destroy() {
     if (m_alloc) {
         for (auto &b: m_blas) {
-            for (auto &a : b)
+            for (auto &a : b) {
                 m_alloc->destroy(a);
+            }
+            b.clear();
         }
-        for (auto &t : m_tlas)
+        for (auto &t : m_tlas) {
             m_alloc->destroy(t);
+        }
         for (auto &buf : m_scratchBuffers) {
+            m_alloc->destroy(buf);
+        }
+        for (auto &i : m_instanceBuffers) {
+            m_alloc->destroy(i);
+        }
+        for (auto &buf : m_tlasScratchBuffers) {
             m_alloc->destroy(buf);
         }
     }
 
     m_tlas.clear();
     m_blas.clear();
+    m_scratchBuffers.clear();
+    m_tlasScratchBuffers.clear();
+    m_instanceBuffers.clear();
+}
 
-    for (auto &fence : m_blasFences) {
-        vkDestroyFence(m_device, fence, nullptr);
-    }
-    for (auto &fence : m_tlasFences) {
-        vkDestroyFence(m_device, fence, nullptr);
-    }
+//--------------------------------------------------------------------------------------------------
+// Returning the constructed top-level acceleration structure
+//
+VkAccelerationStructureKHR nvvk::BetterRtBuilder::getAccelerationStructure(const uint32_t frame) const {
+    return m_tlas[frame].accel;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -117,4 +132,43 @@ void nvvk::BetterRtBuilder::buildBlas(const VkCommandBuffer &cmdBuf,
             //Already Barrier in there
         }
     } while (!finished);
+
+    //Cleanup
+    //Might break stuff
+    m_alloc->finalizeAndReleaseStaging();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Low level of Tlas creation - see buildTlas
+//
+void nvvk::BetterRtBuilder::cmdCreateTlas(VkCommandBuffer cmdBuf,
+                                               uint32_t curFrame,
+                                               uint32_t countInstance,
+                                               VkDeviceAddress instBufferAddr,
+                                               nvvk::Buffer &scratchBuffer,
+                                               VkBuildAccelerationStructureFlagsKHR flags) {
+    nvvk::AccelerationStructureBuildData tlasBuildData;
+    tlasBuildData.asType = VK_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL_KHR;
+
+    nvvk::AccelerationStructureGeometryInfo geo = tlasBuildData.makeInstanceGeometry(countInstance, instBufferAddr);
+    tlasBuildData.addGeometry(geo);
+
+    auto sizeInfo = tlasBuildData.finalizeGeometry(m_device, flags);
+
+    // Allocate the scratch memory
+    VkDeviceSize scratchSize = sizeInfo.buildScratchSize;
+    scratchBuffer            = m_alloc->createBuffer(scratchSize,
+                                                     VK_BUFFER_USAGE_STORAGE_BUFFER_BIT |
+                                                     VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT);
+    VkDeviceAddress scratchAddress = nvvk::getBufferDeviceAddress(m_device, scratchBuffer.buffer);
+    NAME_VK(scratchBuffer.buffer);
+
+    // Create and build the acceleration structure
+    VkAccelerationStructureCreateInfoKHR createInfo = tlasBuildData.makeCreateInfo();
+
+    m_tlas[curFrame] = m_alloc->createAcceleration(createInfo);
+    NAME_VK(m_tlas[curFrame].accel);
+    NAME_VK(m_tlas[curFrame].buffer.buffer);
+    //Barrier inside, but possibly the wrong one
+    tlasBuildData.cmdBuildAccelerationStructure(cmdBuf, m_tlas[curFrame].accel, scratchAddress);
 }

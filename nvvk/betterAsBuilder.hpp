@@ -1,8 +1,10 @@
 #pragma once
 #include <cstdint>
+#include <stdexcept>
 
 #include "commands_vk.hpp"
 #include "debug_util_vk.hpp"
+#include "raytraceKHR_vk.hpp"
 #include "resourceallocator_vk.hpp"
 
 namespace nvvk {
@@ -15,9 +17,9 @@ namespace nvvk {
             nvvk::ResourceAllocator *m_alloc{nullptr};
             nvvk::DebugUtil m_debug;
 
-            std::vector<VkFence> m_blasFences;
-            std::vector<VkFence> m_tlasFences;
             std::vector<nvvk::Buffer> m_scratchBuffers;
+            std::vector<nvvk::Buffer> m_instanceBuffers;
+            std::vector<nvvk::Buffer> m_tlasScratchBuffers;
 
         public:
             // Inputs used to build Bottom-level acceleration structure.
@@ -36,20 +38,24 @@ namespace nvvk {
             // Destroying all allocations
             void destroy();
 
+            // Returning the constructed top-level acceleration structure
+            VkAccelerationStructureKHR getAccelerationStructure(const uint32_t frame) const;
+
             void clearBlas(const uint32_t frame) {
-                if (vkWaitForFences(m_device, 1, &m_blasFences[frame], VK_TRUE, ~0ull) != VK_SUCCESS) {
-                    throw std::runtime_error("Waiting to exterminate blas has produced an error");
-                }
 
                 //I do not think it is in use. The buffer can only be started when the previous frame has been cleared
                 m_alloc->destroy(m_scratchBuffers[frame]);
                 for (auto &blas: m_blas[frame]) {
                     m_alloc->destroy(blas);
                 }
-                m_blas.clear();
+                m_blas[frame].clear();
             }
 
             void clearTlas(const uint32_t frame) {
+
+                //Wait for fence possibly not needed
+                m_alloc->destroy(m_instanceBuffers[frame]);
+                m_alloc->destroy(m_tlasScratchBuffers[frame]);
                 if (m_tlas[frame].accel != VK_NULL_HANDLE) {
                     m_alloc->destroy(m_tlas[frame]);
                     m_tlas[frame] = {};
@@ -65,6 +71,13 @@ namespace nvvk {
                            VkBuildAccelerationStructureFlagsKHR flags =
                                    VK_BUILD_ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT_KHR);
 
+
+            void cmdCreateTlas(VkCommandBuffer cmdBuf,
+                               uint32_t curFrame,
+                               uint32_t countInstance,
+                               VkDeviceAddress instBufferAddr,
+                               nvvk::Buffer &scratchBuffer,
+                               VkBuildAccelerationStructureFlagsKHR flags);
 
             // Build TLAS from an array of VkAccelerationStructureInstanceKHR
             // - Use motion=true with VkAccelerationStructureMotionInstanceNV
@@ -84,8 +97,7 @@ namespace nvvk {
                 uint32_t countInstance = static_cast<uint32_t>(size);
 
                 // Create a buffer holding the actual instance data (matrices++) for use by the AS builder
-                //TODO: Needs to be recreated?
-                nvvk::Buffer instancesBuffer; // Buffer of instances containing the matrices and BLAS ids
+                nvvk::Buffer& instancesBuffer = m_instanceBuffers[curFrame]; // Buffer of instances containing the matrices and BLAS ids
                 instancesBuffer = m_alloc->createBuffer(cmdBuf, instances,
                                                         VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
                                                         | VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR);
@@ -103,14 +115,12 @@ namespace nvvk {
                                      0, nullptr);
 
                 // Creating the TLAS
-                // TODO: Maybe recreate scratch Buffer?
-                nvvk::Buffer scratchBuffer;
-                cmdCreateTlas(cmdBuf, countInstance, instBufferAddr, scratchBuffer, flags, update, motion);
+                cmdCreateTlas(cmdBuf, curFrame, countInstance, instBufferAddr, m_tlasScratchBuffers[curFrame], flags);
 
-                // Destroying temporary data?
+                // Destroying temporary data
+                // The release might be necessary for the instance buffer
                 m_alloc->finalizeAndReleaseStaging();
-                m_alloc->destroy(scratchBuffer);
-                m_alloc->destroy(instancesBuffer);
+
             }
 
 
