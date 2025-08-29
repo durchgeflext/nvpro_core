@@ -49,6 +49,7 @@ namespace nvvk {
                     m_alloc->destroy(blas);
                 }
                 m_blas[frame].clear();
+                m_alloc->finalizeAndReleaseStaging();
             }
 
             void clearTlas(const uint32_t frame) {
@@ -60,6 +61,7 @@ namespace nvvk {
                     m_alloc->destroy(m_tlas[frame]);
                     m_tlas[frame] = {};
                 }
+                m_alloc->finalizeAndReleaseStaging();
             }
 
             // Return the Acceleration Structure Device Address of a BLAS Id
@@ -117,10 +119,17 @@ namespace nvvk {
                 // Creating the TLAS
                 cmdCreateTlas(cmdBuf, curFrame, countInstance, instBufferAddr, m_tlasScratchBuffers[curFrame], flags);
 
-                // Destroying temporary data
-                // The release might be necessary for the instance buffer
-                m_alloc->finalizeAndReleaseStaging();
+                //Add barrier
+                VkMemoryBarrier tlasBarrier {VK_STRUCTURE_TYPE_MEMORY_BARRIER,
+                                            nullptr,
+                                            VK_ACCESS_ACCELERATION_STRUCTURE_WRITE_BIT_KHR,
+                                            VK_ACCESS_ACCELERATION_STRUCTURE_READ_BIT_KHR,
 
+                };
+                vkCmdPipelineBarrier(cmdBuf, VK_PIPELINE_STAGE_ACCELERATION_STRUCTURE_BUILD_BIT_KHR,
+                                    VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BIT_KHR,
+                                    0, 1, &tlasBarrier, 0,
+                                    nullptr, 0, nullptr);
             }
 
 

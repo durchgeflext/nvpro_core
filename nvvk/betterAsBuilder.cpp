@@ -116,12 +116,12 @@ void nvvk::BetterRtBuilder::buildBlas(const VkCommandBuffer &cmdBuf,
     VkDeviceSize scratchSize = blasBuilder.getScratchSize(hintMaxBudget, blasBuildData, minAlignment);
     // 2) allocating the scratch buffer
 
-    nvvk::Buffer blasScratchBuffer = m_alloc->createBuffer(scratchSize,
+    m_scratchBuffers[curFrame] = m_alloc->createBuffer(scratchSize,
                                                            VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT |
                                                            VK_BUFFER_USAGE_STORAGE_BUFFER_BIT);
     // 3) getting the device address for the scratch buffer
     std::vector<VkDeviceAddress> scratchAddresses;
-    blasBuilder.getScratchAddresses(hintMaxBudget, blasBuildData, blasScratchBuffer.address, scratchAddresses,
+    blasBuilder.getScratchAddresses(hintMaxBudget, blasBuildData, m_scratchBuffers[curFrame].address, scratchAddresses,
                                     minAlignment);
 
 
