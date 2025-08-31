@@ -9,6 +9,21 @@
 
 namespace nvvk {
     class BetterRtBuilder {
+        private:
+            struct InstanceDestroyer {
+                std::vector<nvvk::Buffer> buffers;
+                BetterRtBuilder* builder;
+
+                explicit InstanceDestroyer(BetterRtBuilder *builder) : builder(builder) {}
+
+                void empty() {
+                    for (auto buf : buffers) {
+                        builder->m_alloc->destroy(buf);
+                    }
+                    buffers.clear();
+                }
+
+            };
         protected:
             std::vector<std::vector<nvvk::AccelKHR> > m_blas; // Bottom-level acceleration structure
             std::vector<nvvk::AccelKHR> m_tlas; // Top-level acceleration structure
@@ -20,6 +35,8 @@ namespace nvvk {
             std::vector<nvvk::Buffer> m_scratchBuffers;
             std::vector<nvvk::Buffer> m_instanceBuffers;
             std::vector<nvvk::Buffer> m_tlasScratchBuffers;
+
+            InstanceDestroyer m_instDest = InstanceDestroyer(this);
 
         public:
             // Inputs used to build Bottom-level acceleration structure.
@@ -55,7 +72,8 @@ namespace nvvk {
             void clearTlas(const uint32_t frame) {
 
                 //Wait for fence possibly not needed
-                m_alloc->destroy(m_instanceBuffers[frame]);
+                m_instDest.empty();
+                m_instDest.buffers.push_back(m_instanceBuffers[frame]);
                 m_alloc->destroy(m_tlasScratchBuffers[frame]);
                 if (m_tlas[frame].accel != VK_NULL_HANDLE) {
                     m_alloc->destroy(m_tlas[frame]);
@@ -99,13 +117,12 @@ namespace nvvk {
                 uint32_t countInstance = static_cast<uint32_t>(size);
 
                 // Create a buffer holding the actual instance data (matrices++) for use by the AS builder
-                nvvk::Buffer& instancesBuffer = m_instanceBuffers[curFrame]; // Buffer of instances containing the matrices and BLAS ids
-                instancesBuffer = m_alloc->createBuffer(cmdBuf, instances,
+                m_instanceBuffers[curFrame] = m_alloc->createBuffer(cmdBuf, instances,
                                                         VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT
                                                         | VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR);
-                NAME_VK(instancesBuffer.buffer);
+                NAME_VK(m_instanceBuffers[curFrame].buffer);
                 VkBufferDeviceAddressInfo bufferInfo{VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO, nullptr,
-                                                     instancesBuffer.buffer};
+                                                     m_instanceBuffers[curFrame].buffer};
                 VkDeviceAddress instBufferAddr = vkGetBufferDeviceAddress(m_device, &bufferInfo);
 
                 // Make sure the copy of the instance buffer are copied before triggering the acceleration structure build
