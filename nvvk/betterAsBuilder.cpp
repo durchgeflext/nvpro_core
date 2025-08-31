@@ -51,6 +51,7 @@ void nvvk::BetterRtBuilder::destroy() {
         for (auto &buf : m_tlasScratchBuffers) {
             m_alloc->destroy(buf);
         }
+        m_instDest.empty();
     }
 
     m_tlas.clear();
