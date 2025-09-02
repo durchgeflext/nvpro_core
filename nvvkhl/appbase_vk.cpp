@@ -608,7 +608,7 @@ void nvvkhl::AppBaseVk::onMouseWheel(int delta)
     CameraManip.wheel(delta > 0 ? 1 : -1, m_inputs);
 }
 
-void nvvkhl::AppBaseVk::hideGUI() {
+void nvvkhl::AppBaseVk::toggleGUI() {
     m_show_gui = !m_show_gui;
 }
 
