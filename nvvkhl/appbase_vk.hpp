@@ -285,6 +285,7 @@ public:
   virtual void onKeyboardChar(unsigned char key);
   virtual void onMouseButton(int button, int action, int mods);
   virtual void onMouseWheel(int delta);
+  virtual void hideGUI();
   virtual void onFileDrop(const char* filename) {}
   void         setViewport(const VkCommandBuffer& cmdBuf);
   void         initGUI(uint32_t subpassID = 0);
