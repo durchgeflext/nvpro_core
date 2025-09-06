@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <vulkan/vulkan_core.h>
 
 #include <memory>
@@ -149,12 +150,23 @@ it is possible to use a ResourceAllocator per thread.
 namespace nvvk {
 
 // Objects
-struct Buffer
-{
-  VkBuffer        buffer = VK_NULL_HANDLE;
-  MemHandle       memHandle{};
-  VkDeviceAddress address{0};
-};
+
+#if PROFILE//NOLINT
+    struct Buffer
+    {
+        VkBuffer        buffer = VK_NULL_HANDLE;
+        MemHandle       memHandle{};
+        VkDeviceAddress address{0};
+        size_t size{0};
+    };
+#else
+    struct Buffer
+    {
+        VkBuffer        buffer = VK_NULL_HANDLE;
+        MemHandle       memHandle{};
+        VkDeviceAddress address{0};
+    };
+#endif
 
 // Large buffers are used for buffers larger than the
 // maximum size for a single allocation. Internally a large buffer

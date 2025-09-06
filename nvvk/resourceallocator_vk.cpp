@@ -107,6 +107,9 @@ Buffer ResourceAllocator::createBuffer(const VkBufferCreateInfo& info_, const Vk
   bufferReqs.buffer = resultBuffer.buffer;
 
   vkGetBufferMemoryRequirements2(m_device, &bufferReqs, &memReqs);
+#if PROFILE
+    resultBuffer.size = memReqs.memoryRequirements.size;
+#endif
 
   // Build up allocation info
   MemAllocateInfo allocInfo(memReqs.memoryRequirements, memProperties_, false);
@@ -131,6 +134,9 @@ Buffer ResourceAllocator::createBuffer(const VkBufferCreateInfo& info_, const Vk
   else
   {
     destroy(resultBuffer);
+#if PROFILE
+      resultBuffer.size = 0;
+#endif
   }
 
   // Get the device address if requested
