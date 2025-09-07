@@ -28,7 +28,6 @@ namespace nvvk {
                 }
 
             };
-        protected:
             std::vector<nvvk::AccelKHR> m_blas; // Bottom-level acceleration structure
             nvvk::AccelKHR m_tlas; // Top-level acceleration structure
             // Setup
@@ -151,6 +150,17 @@ namespace nvvk {
                                     nullptr, 0, nullptr);
             }
 
-
+//nvvk::Buffer::size is only defined in profiling mode
+#if PROFILE
+            uint64_t getGPUMemory() const {
+                uint64_t result = 0;
+                result += m_instanceBuffer.size;
+                result += m_scratchBuffer.size;
+                result += m_tlasScratchBuffer.size;
+                result += m_blas[0].buffer.size;
+                result += m_tlas.buffer.size;
+                return result;
+            }
+#endif
     };
 }
